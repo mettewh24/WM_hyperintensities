@@ -156,3 +156,111 @@ def test_empty_dataframe_num_of_repeated_exams():
     
     # Test the function with an empty DataFrame
     assert utils.num_of_repeated_exams('A', 'MRI', df) == 0
+
+# Test for is_exam_available
+
+def test_is_exam_available():
+    """
+    Test the is_exam_available function.
+
+    Given Input:
+    - patient_id: 'A', 'B', 'C'
+    - exam_name: 'MRI', 'X-ray', 'CT'
+    - dataframe: A sample DataFrame with patient exam data:
+        {'PatientId': ['A', 'A', 'B', 'B', 'C'],
+         'ExamName': ['MRI', 'MRI', 'X-ray', 'CT', 'X-ray']}
+
+    This function tests:
+    - The function should return True if the specified exam is available for the patient.
+    - The function should return False if the specified exam is not available for the patient.
+    """
+    # Create a sample DataFrame
+    data = {'PatientId': ['A', 'A', 'B', 'B', 'C'],
+            'ExamName': ['MRI', 'MRI', 'X-ray', 'CT', 'X-ray']}
+    df = pd.DataFrame(data)
+    
+    # Test the function
+    assert utils.is_exam_available('A', 'MRI', df) == True
+    assert utils.is_exam_available('B', 'X-ray', df) == True
+    assert utils.is_exam_available('C', 'CT', df) == False
+
+def test_patient_not_in_df_is_exam_available():
+    """
+    Test the is_exam_available function for a patient not in the DataFrame.
+
+    Given Input:
+    - patient_id: 'D'
+    - exam_name: 'CT'
+    - dataframe: A sample DataFrame with patient exam data:
+        {'PatientId': ['A', 'A', 'B', 'B', 'C'],
+         'ExamName': ['MRI', 'MRI', 'X-ray', 'CT', 'X-ray']}
+
+    This function tests:
+    - The function should return False when the specified patient ID is not found in the DataFrame.
+    """    
+    # Create a sample DataFrame
+    data = {'PatientId': ['A', 'A', 'B', 'B', 'C'],
+            'ExamName': ['MRI', 'MRI', 'X-ray', 'CT', 'X-ray']}
+    df = pd.DataFrame(data)
+    
+    # Test the function with a patient ID that does not exist in the DataFrame
+    assert utils.is_exam_available('D', 'CT', df) == False
+
+
+def test_empty_dataframe_is_exam_available():
+    """
+    Test the is_exam_available function with an empty DataFrame.
+
+    Given Input:
+    - patient_id: 'A'
+    - exam_name: 'MRI'
+    - dataframe: An empty DataFrame with columns ['PatientId', 'ExamName']
+
+    This function tests:
+    - The function should return False when the DataFrame is empty.
+    """    
+    # Create an empty DataFrame
+    df = pd.DataFrame(columns=['PatientId', 'ExamName'])
+    
+    # Test the function with an empty DataFrame
+    assert utils.is_exam_available('A', 'MRI', df) == False 
+
+
+# Test for num_of_patients_per_exam
+def test_num_of_patients_per_exam():
+    """
+    Test the num_of_patients_per_exam function.
+
+    Given Input:
+    - dataframe: A sample DataFrame with patient exam data:
+        {'PatientId': ['A', 'A', 'B', 'B', 'C'],
+         'ExamName': ['MRI', 'MRI', 'X-ray', 'CT', 'X-ray']}
+
+    This function tests:
+    - The function should return the correct count of unique patients for each exam.
+    """
+    # Create a sample DataFrame
+    data = {'PatientId': ['A', 'A', 'B', 'B', 'C'],
+            'ExamName': ['MRI', 'MRI', 'X-ray', 'x_ray', 'X-ray']}
+    df = pd.DataFrame(data)
+    
+    # Test the function
+    assert utils.num_of_patients_per_exam(df, 'MRI') == 1
+    assert utils.num_of_patients_per_exam(df, 'X-ray') == 2
+    assert utils.num_of_patients_per_exam(df, 'CT') == 0
+
+def test_empty_dataframe_num_of_patients_per_exam():
+    """
+    Test the num_of_patients_per_exam function with an empty DataFrame.
+
+    Given Input:
+    - dataframe: An empty DataFrame with columns ['PatientId', 'ExamName']
+
+    This function tests:
+    - The function should return an empty dictionary when the DataFrame is empty.
+    """
+    # Create an empty DataFrame
+    df = pd.DataFrame(columns=['PatientId', 'ExamName'])
+    
+    # Test the function with an empty DataFrame
+    assert utils.num_of_patients_per_exam(df, 'MRI') == 0
