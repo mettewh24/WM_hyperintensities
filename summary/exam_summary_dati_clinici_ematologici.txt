@@ -1,0 +1,104 @@
+Total number of exams in dataframe: 34
+
+Exam Name: ALT
+Performed by 17 patients for a total of 17 times
+
+Exam Name: AST
+Performed by 17 patients for a total of 17 times
+
+Exam Name: Bilirubina Indiretta (umol/L)
+Performed by 16 patients for a total of 16 times
+
+Exam Name: Bilirubina Totale (umol/L)
+Performed by 16 patients for a total of 16 times
+
+Exam Name: Bilirubina Diretta (umol/L)
+Performed by 16 patients for a total of 16 times
+
+Exam Name: Creatinina (umol/L)
+Performed by 17 patients for a total of 17 times
+
+Exam Name: Ferritina
+Performed by 17 patients for a total of 17 times
+
+Exam Name: LDH
+Performed by 17 patients for a total of 17 times
+
+Exam Name: Urea (mmol/L)
+Performed by 17 patients for a total of 17 times
+
+Exam Name: GB
+Performed by 17 patients for a total of 17 times
+
+Exam Name: Hb
+Performed by 17 patients for a total of 17 times
+
+Exam Name: Hb A2
+Performed by 17 patients for a total of 17 times
+
+Exam Name: Hb F
+Performed by 17 patients for a total of 17 times
+
+Exam Name: Hb S
+Performed by 17 patients for a total of 17 times
+
+Exam Name: L
+Performed by 16 patients for a total of 16 times
+
+Exam Name: MCV
+Performed by 17 patients for a total of 17 times
+
+Exam Name: N
+Performed by 16 patients for a total of 16 times
+
+Exam Name: PLT
+Performed by 17 patients for a total of 17 times
+
+Exam Name: Reticolociti
+Performed by 17 patients for a total of 17 times
+
+Exam Name: TCCS
+Performed by 17 patients for a total of 17 times
+
+Exam Name: TCCS TAMMv (AB)
+Performed by 15 patients for a total of 15 times
+
+Exam Name: PCR
+Performed by 16 patients for a total of 16 times
+
+Exam Name: TCCS TAMMv (PCA dx)
+Performed by 17 patients for a total of 17 times
+
+Exam Name: TCCS TAMMv  (PCA sx)
+Performed by 17 patients for a total of 17 times
+
+Exam Name: TCCS TAMMv (ACA dx)
+Performed by 17 patients for a total of 17 times
+
+Exam Name: TCCS TAMMv (ACA sx)
+Performed by 17 patients for a total of 17 times
+
+Exam Name: TCCS TAMMv (d ICA dx)
+Performed by 17 patients for a total of 17 times
+
+Exam Name: TCCS TAMMv (d ICA sx)
+Performed by 17 patients for a total of 17 times
+
+Exam Name: TCCS TAMMv (TOP AB)
+Performed by 14 patients for a total of 14 times
+
+Exam Name: Retic. %
+Performed by 17 patients for a total of 17 times
+
+Exam Name: MCH
+Performed by 17 patients for a total of 17 times
+
+Exam Name: Albumina:Creat - Ratio
+Performed by 15 patients for a total of 15 times
+
+Exam Name: TCCS TAMMv ACM dx (max)
+Performed by 17 patients for a total of 17 times
+
+Exam Name: TCCS TAMMv ACM sx (max)
+Performed by 17 patients for a total of 17 times
+

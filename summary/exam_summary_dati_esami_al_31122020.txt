@@ -1,0 +1,251 @@
+Total number of exams in dataframe: 83
+
+Exam Name: Acido Folico
+Performed by 64 patients for a total of 381 times
+
+Exam Name: Albumina
+Performed by 47 patients for a total of 92 times
+
+Exam Name: ALT
+Performed by 65 patients for a total of 2408 times
+
+Exam Name: Aptoglobina
+Performed by 30 patients for a total of 48 times
+
+Exam Name: AST
+Performed by 65 patients for a total of 2385 times
+
+Exam Name: Bilirubina Indiretta (umol/L)
+Performed by 65 patients for a total of 1423 times
+
+Exam Name: Bilirubina Totale (umol/L)
+Performed by 65 patients for a total of 1446 times
+
+Exam Name: Bilirubina Diretta (umol/L)
+Performed by 65 patients for a total of 1437 times
+
+Exam Name: Creatinina (umol/L)
+Performed by 65 patients for a total of 2142 times
+
+Exam Name: Ferritina
+Performed by 65 patients for a total of 1799 times
+
+Exam Name: Ferro
+Performed by 63 patients for a total of 580 times
+
+Exam Name: Gamma GT
+Performed by 49 patients for a total of 197 times
+
+Exam Name: LDH
+Performed by 65 patients for a total of 972 times
+
+Exam Name: Urea (mmol/L)
+Performed by 65 patients for a total of 2097 times
+
+Exam Name: Vitamina B12
+Performed by 61 patients for a total of 224 times
+
+Exam Name: E
+Performed by 31 patients for a total of 97 times
+
+Exam Name: GB
+Performed by 65 patients for a total of 4468 times
+
+Exam Name: Hb
+Performed by 65 patients for a total of 4446 times
+
+Exam Name: Hb A1
+Performed by 64 patients for a total of 3522 times
+
+Exam Name: Hb A2
+Performed by 64 patients for a total of 3529 times
+
+Exam Name: Hb C
+Performed by 64 patients for a total of 604 times
+
+Exam Name: Hb F
+Performed by 64 patients for a total of 3528 times
+
+Exam Name: Hb S
+Performed by 64 patients for a total of 3538 times
+
+Exam Name: Ht
+Performed by 64 patients for a total of 1291 times
+
+Exam Name: L
+Performed by 63 patients for a total of 703 times
+
+Exam Name: M
+Performed by 41 patients for a total of 193 times
+
+Exam Name: MCV
+Performed by 64 patients for a total of 3131 times
+
+Exam Name: N
+Performed by 64 patients for a total of 2998 times
+
+Exam Name: PLT
+Performed by 64 patients for a total of 4238 times
+
+Exam Name: Urine - Stick
+Performed by 63 patients for a total of 547 times
+
+Exam Name: Transferrina
+Performed by 45 patients for a total of 116 times
+
+Exam Name: Reticolociti
+Performed by 64 patients for a total of 2735 times
+
+Exam Name: Resistenze Osmotiche
+Performed by 3 patients for a total of 3 times
+
+Exam Name: Sodio
+Performed by 47 patients for a total of 345 times
+
+Exam Name: Potassio
+Performed by 47 patients for a total of 344 times
+
+Exam Name: Cloro
+Performed by 47 patients for a total of 335 times
+
+Exam Name: Calcio (mmol/L)
+Performed by 55 patients for a total of 370 times
+
+Exam Name: Osmolalità plasmatica
+Performed by 4 patients for a total of 5 times
+
+Exam Name: Glucosio  (mmol/L)
+Performed by 39 patients for a total of 255 times
+
+Exam Name: Urine α1
+Performed by 15 patients for a total of 21 times
+
+Exam Name: Urine β2
+Performed by 16 patients for a total of 21 times
+
+Exam Name: Urine Albuminuria (mg/L)
+Performed by 58 patients for a total of 227 times
+
+Exam Name: Urine Proteinuria
+Performed by 27 patients for a total of 46 times
+
+Exam Name: Urine Creatininuria (mmol/L)
+Performed by 59 patients for a total of 242 times
+
+Exam Name: Emogas
+Performed by 48 patients for a total of 111 times
+
+Exam Name: Zinco
+Performed by 51 patients for a total of 178 times
+
+Exam Name: PTT
+Performed by 59 patients for a total of 221 times
+
+Exam Name: PT
+Performed by 59 patients for a total of 224 times
+
+Exam Name: AT3
+Performed by 44 patients for a total of 140 times
+
+Exam Name: Fibrinogeno
+Performed by 58 patients for a total of 196 times
+
+Exam Name: CPK
+Performed by 7 patients for a total of 8 times
+
+Exam Name: Magnesio
+Performed by 25 patients for a total of 169 times
+
+Exam Name: Rame
+Performed by 44 patients for a total of 88 times
+
+Exam Name: Omocisteina_C
+Performed by 41 patients for a total of 42 times
+
+Exam Name: FDP
+Performed by 52 patients for a total of 124 times
+
+Exam Name: Retic. %
+Performed by 61 patients for a total of 2066 times
+
+Exam Name: Vitamina D
+Performed by 59 patients for a total of 573 times
+
+Exam Name: PCV
+Performed by 59 patients for a total of 407 times
+
+Exam Name: Acido Urico (mmol/L)
+Performed by 18 patients for a total of 41 times
+
+Exam Name: Urine Albuminuria/Creatininuria  (mg/g creat.)
+Performed by 58 patients for a total of 218 times
+
+Exam Name: Vitamina E
+Performed by 38 patients for a total of 42 times
+
+Exam Name: Vitamina A
+Performed by 37 patients for a total of 45 times
+
+Exam Name: Acido Metil Malonico
+Performed by 35 patients for a total of 37 times
+
+Exam Name: PTH
+Performed by 44 patients for a total of 114 times
+
+Exam Name: Fosforo (mmol/L)
+Performed by 40 patients for a total of 71 times
+
+Exam Name: B
+Performed by 11 patients for a total of 18 times
+
+Exam Name: IgE
+Performed by 12 patients for a total of 13 times
+
+Exam Name: Proteina C
+Performed by 18 patients for a total of 34 times
+
+Exam Name: Tipizzazione HLA
+Performed by 18 patients for a total of 27 times
+
+Exam Name: ALP
+Performed by 57 patients for a total of 217 times
+
+Exam Name: IgA
+Performed by 19 patients for a total of 103 times
+
+Exam Name: IgG
+Performed by 16 patients for a total of 101 times
+
+Exam Name: IgM
+Performed by 16 patients for a total of 100 times
+
+Exam Name: Proteine Totali (g/L)
+Performed by 41 patients for a total of 59 times
+
+Exam Name: INR
+Performed by 37 patients for a total of 41 times
+
+Exam Name: Ciclosporina
+Performed by 9 patients for a total of 130 times
+
+Exam Name: Test Falcizzazione
+Performed by 2 patients for a total of 2 times
+
+Exam Name: MCH
+Performed by 6 patients for a total of 7 times
+
+Exam Name: Ammonio
+Performed by 1 patients for a total of 1 times
+
+Exam Name: Amilasi
+Performed by 2 patients for a total of 19 times
+
+Exam Name: Proteina/Creatinina
+Performed by 4 patients for a total of 4 times
+
+Exam Name: Proteina S
+Performed by 1 patients for a total of 1 times
+
+Exam Name: Carbamazepina
+Performed by 1 patients for a total of 13 times
+
