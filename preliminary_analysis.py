@@ -90,3 +90,44 @@ print_patient_summary(dati_esami_al_31122020,"dati_esami_al_31122020")
 
 print_exam_summary(dati_esami_al_31122020, "dati_esami_al_31122020")
 
+# %% Data pre-processing of dati_parametri_al_31122020
+
+# Load the data
+dati_parametri_al_31122020=pd.read_csv('./data/dati_parametri_al_31122020.csv')
+sns.jointplot(data=dati_parametri_al_31122020, x='BloodPressureMax', y='BloodPressureMin', kind='scatter')
+
+#Remove Outliers with no physical/medical meaning
+
+#Weight(Kg)
+dati_parametri_al_31122020.loc[dati_parametri_al_31122020['Weight(Kg)']>200,'Weight(Kg)']=np.nan
+dati_parametri_al_31122020.loc[dati_parametri_al_31122020['Weight(Kg)']<5,'Weight(Kg)']=np.nan
+
+#Height(cm)
+dati_parametri_al_31122020.loc[dati_parametri_al_31122020['Height(cm)']>250,'Height(cm)']=np.nan
+dati_parametri_al_31122020.loc[dati_parametri_al_31122020['Height(cm)']<30,'Height(cm)']=np.nan
+sns.jointplot(data=dati_parametri_al_31122020, x='Weight(Kg)', y='Height(cm)', kind='scatter')
+
+#Correction on inverted values for max and min blood pressure
+condition = dati_parametri_al_31122020['BloodPressureMax'] < dati_parametri_al_31122020['BloodPressureMin']
+dati_parametri_al_31122020.loc[condition, ['BloodPressureMax', 'BloodPressureMin']] = dati_parametri_al_31122020.loc[condition, ['BloodPressureMin', 'BloodPressureMax']].values
+
+#BloodPressureMax <20 removal (impossible to have max blood pressure lower than 20)
+dati_parametri_al_31122020.loc[dati_parametri_al_31122020['BloodPressureMax']<20,'BloodPressureMax']=np.nan
+
+#BloodPressureMin <20 removal (impossible to have min blood pressure lower than 20)
+dati_parametri_al_31122020.loc[dati_parametri_al_31122020['BloodPressureMin']<20,'BloodPressureMin']=np.nan
+sns.jointplot(data=dati_parametri_al_31122020, x='BloodPressureMax', y='BloodPressureMin', kind='scatter')
+
+#OxygenSaturation(%)<50 removal (saturation lower than 50 not feasible for life)
+dati_parametri_al_31122020.loc[dati_parametri_al_31122020['OxygenSaturation']<50,'OxygenSaturation']=np.nan
+
+#HeartRate>300 and HeartRate<15 removal (no life)
+dati_parametri_al_31122020.loc[dati_parametri_al_31122020['HeartRate']>300,'HeartRate']=np.nan
+dati_parametri_al_31122020.loc[dati_parametri_al_31122020['HeartRate']<15,'HeartRate']=np.nan
+
+#BMI>100 and BMI<10 removal
+dati_parametri_al_31122020.loc[dati_parametri_al_31122020['BMI']>100,'BMI']=np.nan      
+dati_parametri_al_31122020.loc[dati_parametri_al_31122020['BMI']<10,'BMI']=np.nan
+
+#RespiratoryRate=0 removal
+dati_parametri_al_31122020.loc[dati_parametri_al_31122020['RespiratoryRate']<1,'RespiratoryRate']=np.nan
