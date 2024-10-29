@@ -2,6 +2,7 @@
 
 import numpy as np 
 import pandas as pd
+import seaborn as sns
 from utils import list_performed_exams, num_of_repeated_exams
 
 # %% Print a summary of the data in the dataframe to a text file
@@ -66,4 +67,26 @@ def print_exam_summary(dataframe: pd.DataFrame, filename: str):
         summary_lines.append(f"Performed by {temp['PatientId'].nunique()} patients for a total of {temp.shape[0]} times\n\n")
     with open(f"./summary/exam_summary_{filename}.txt", 'w') as file:
         file.writelines(summary_lines)
+
+
+#%%  Charcterization of dati_clinici_ematologici
+
+# Load the data
+dati_clinici_ematologici=pd.read_csv('./data/dati_clinici_ematologici.csv')
+
+# Print summary for the dati_clinici_ematologici dataframe
+print_patient_summary(dati_clinici_ematologici, "dati_clinici_ematologici")
+
+print_exam_summary(dati_clinici_ematologici, "dati_clinici_ematologici")
+
+
+#%% Charcterization of dati_esami_al_31122020
+
+#Load the data
+dati_esami_al_31122020=pd.read_csv('./data/dati_esami_al_31122020.csv')
+
+#Print summary for the dati_esami_al_31122020 dataframe
+print_patient_summary(dati_esami_al_31122020,"dati_esami_al_31122020")
+
+print_exam_summary(dati_esami_al_31122020, "dati_esami_al_31122020")
 
