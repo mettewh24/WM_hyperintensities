@@ -96,3 +96,20 @@ with open(f"./summary/t-tests.txt", 'w') as file:
 
 file.close()
 
+
+#%% Plot some of the outcomes, gruoped by Diagnosis
+df=pivot_df[["DiagnosisName","Hb S","GB","MCV",'Hb C']]
+
+palette = {
+    "HbS/HbS": "green",
+    "HbS/HbC": "blue",
+    "HbS/βthal°": "red"
+}
+
+g=sns.PairGrid(df, height=2, hue="DiagnosisName",palette=palette)
+g.map_diag(sns.histplot,alpha=0.5)
+g.map_offdiag(sns.scatterplot,alpha=0.5,s=10)
+
+g.add_legend(title="Diagnosis")
+
+# %%
