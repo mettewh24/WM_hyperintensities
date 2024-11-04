@@ -50,12 +50,14 @@ def t_test(group1_name, group2_name, dataframe):
     # Loop through each column and perform t-tests
     for column in dataframe.columns:
         if column not in ['DiagnosisName', 'PatientId']:
-            group1 = diagnosis_groups.get_group(group1_name)[column].dropna(ignore_index=True)
-            group2 = diagnosis_groups.get_group(group2_name)[column].dropna(ignore_index=True)
- 
-            # Perform t-test between group1 and group2
-            t_stat, p_value = ttest_ind(group1, group2, equal_var=False)
-            t_test[column] = {'t_stat': t_stat, 'p_value': p_value}
+            group_1 = diagnosis_groups.get_group(group1_name)[column].dropna(ignore_index=True)
+            group_2 = diagnosis_groups.get_group(group2_name)[column].dropna(ignore_index=True)
+            
+            #Added condition to check that the groups have more than 1 element, avoinding division by 0 in ttest_ind
+            if group_1.shape[0]>1 and group_2.shape[0]>1:
+                # Perform t-test between group1 and group2
+                t_stat, p_value = ttest_ind(group_1, group_2, equal_var=False)
+                t_test[column] = {'t_stat': t_stat, 'p_value': p_value}
     
     #Convert to dataframe and drop rows with missing values
     t_test_df = pd.DataFrame(t_test).T
