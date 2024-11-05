@@ -31,7 +31,6 @@ pivot_df = pivot_df.reset_index(drop=False)
 #%% Perform t-tests
 
 #NOTE: Check Hb exam, not clear why most have 0 value
-#TODO: Check for warnings of ttest_ind 
 
 # Define the groups to compare
 group1 = "HbS/HbC"
@@ -113,5 +112,6 @@ g.map_diag(sns.histplot,alpha=0.5)
 g.map_offdiag(sns.scatterplot,alpha=0.5,s=10)
 
 g.add_legend(title="Diagnosis")
-
+g.figure.suptitle("Pairplot of some outcomes, grouped by Diagnosis", y=1.02)
+g.savefig("./plots/pairplot.png", dpi=600)
 # %%

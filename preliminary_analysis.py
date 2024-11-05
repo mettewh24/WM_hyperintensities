@@ -94,8 +94,13 @@ print_exam_summary(dati_esami_al_31122020, "dati_esami_al_31122020")
 
 # Load the data
 dati_parametri_al_31122020=pd.read_csv('./data/dati_parametri_al_31122020.csv')
-sns.jointplot(data=dati_parametri_al_31122020, x='BloodPressureMax', y='BloodPressureMin', kind='scatter')
+plot=sns.jointplot(data=dati_parametri_al_31122020, x='BloodPressureMax', y='BloodPressureMin', kind='scatter',dropna=True)
+plot.figure.suptitle("Jointplot of Blood pressure max and min, before data cleaning", y=1.02)
+plot.savefig("./plots/blood_pressure.png", dpi=600)
 
+plot=sns.jointplot(data=dati_parametri_al_31122020, x='Weight(Kg)', y='Height(cm)', kind='scatter',dropna=True)
+plot.figure.suptitle("Jointplot of Weight and Height, before data cleaning", y=1.02)
+plot.savefig("./plots/heigh_weight.png", dpi=600)
 #Remove Outliers with no physical/medical meaning
 
 #Weight(Kg)
@@ -105,7 +110,9 @@ dati_parametri_al_31122020.loc[dati_parametri_al_31122020['Weight(Kg)']<5,'Weigh
 #Height(cm)
 dati_parametri_al_31122020.loc[dati_parametri_al_31122020['Height(cm)']>250,'Height(cm)']=np.nan
 dati_parametri_al_31122020.loc[dati_parametri_al_31122020['Height(cm)']<30,'Height(cm)']=np.nan
-sns.jointplot(data=dati_parametri_al_31122020, x='Weight(Kg)', y='Height(cm)', kind='scatter')
+plot=sns.jointplot(data=dati_parametri_al_31122020, x='Weight(Kg)', y='Height(cm)', kind='scatter',dropna=True)
+plot.figure.suptitle("Jointplot of Weight and Height, after data cleaning", y=1.02)
+plot.savefig("./plots/heigh_weight_clean.png", dpi=600)
 
 #Correction on inverted values for max and min blood pressure
 condition = dati_parametri_al_31122020['BloodPressureMax'] < dati_parametri_al_31122020['BloodPressureMin']
@@ -116,7 +123,9 @@ dati_parametri_al_31122020.loc[dati_parametri_al_31122020['BloodPressureMax']<20
 
 #BloodPressureMin <20 removal (impossible to have min blood pressure lower than 20)
 dati_parametri_al_31122020.loc[dati_parametri_al_31122020['BloodPressureMin']<20,'BloodPressureMin']=np.nan
-sns.jointplot(data=dati_parametri_al_31122020, x='BloodPressureMax', y='BloodPressureMin', kind='scatter')
+plot=sns.jointplot(data=dati_parametri_al_31122020, x='BloodPressureMax', y='BloodPressureMin', kind='scatter', dropna=True)
+plot.figure.suptitle("Jointplot of Blood pressure max and min, after data cleaning", y=1.02)
+plot.savefig("./plots/blood_pressure_clean.png", dpi=600)
 
 #OxygenSaturation(%)<50 removal (saturation lower than 50 not feasible for life)
 dati_parametri_al_31122020.loc[dati_parametri_al_31122020['OxygenSaturation']<50,'OxygenSaturation']=np.nan
