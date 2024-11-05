@@ -36,3 +36,12 @@ Contains the `.txt` files with the results of the patient and exams summary:
 - `patient_summary_dati_clinici_ematologici.txt`: summary of the patients in `dati_clinici_ematologici.csv`. For each patient, the list of exams performed and the number of times each exams was repeated is reported, as well as the total number of patients in the dataframe.
 - `exam_summary_dati_esami_al_31122020.txt`:summary of the exams in `dati_esami_al_31122020.csv`. For each exam, the number of patient and the number of times that the exam was performed is reported, as well as the total number of exams in the dataframe
 - `patient_summary_dati_esami_al_31122020.txt`: summary of the patients in `dati_esami_al_31122020.csv`. For each patient, the list of exams performed and the number of times each exams was repeated is reported, as well as the total number of patients in the dataframe.
+- `t-tests.txt`: contains the results of the t-test for the exams that have `p<0.05`, for all the possible diagnosis group pairs.
+
+### Plots folder 
+Folder containing all the saved plots:
+- `blood_pressure.png`: jointplot of min and max blood pressure.
+- `blood_pressure_clean.png`: jointplot of min and max blood pressure, after removing outliers.
+- `height_weight.png`: jointplot of weight and height.
+- `height_weight_clean.png`: jointplot of weight and height, after removing outliers.
+- `pairplot.png`: pairplot of some of the variables with `p<0.05` from the t-test. 
