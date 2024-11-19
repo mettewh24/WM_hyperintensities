@@ -70,14 +70,14 @@ t_test_1_2_df=t_test(group1,group2,pivot_df)
 t_test_1_3_df=t_test(group1,group3,pivot_df)
 t_test_2_3_df=t_test(group2,group3,pivot_df)
 
-# Filter the results to keep only significant p-values
-t_test_1_3_df=t_test_1_3_df[t_test_1_3_df["p_value"]<0.05]
+#Filter with Bonferroni correction
+t_test_1_3_df=t_test_1_3_df[t_test_1_3_df["p_value"]<0.05/t_test_1_3_df.shape[0]]
 t_test_1_3_df.reset_index(inplace=True)
 
-t_test_2_3_df=t_test_2_3_df[t_test_2_3_df["p_value"]<0.05]
+t_test_2_3_df=t_test_2_3_df[t_test_2_3_df["p_value"]<0.05/t_test_2_3_df.shape[0]]
 t_test_2_3_df.reset_index(inplace=True)
 
-t_test_1_2_df=t_test_1_2_df[t_test_1_2_df["p_value"]<0.05]
+t_test_1_2_df=t_test_1_2_df[t_test_1_2_df["p_value"]<0.05/t_test_1_2_df.shape[0]]
 t_test_1_2_df.reset_index(inplace=True)
 
 #%% Save the results to a text file

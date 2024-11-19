@@ -1,44 +1,23 @@
 T-test results for HbS/HbC vs HbS/βthal°
        index    t_stat      p_value
-         ALT -3.011170 1.374240e-02
-Acido Folico -3.369968 1.588095e-02
-   Ferritina -3.732660 1.754251e-02
           Hb  5.643543 4.952468e-04
         Hb C 89.400653 1.319484e-10
         Hb F -5.870082 5.313502e-04
-          Ht  3.544939 1.342734e-02
-    Retic. % -4.371388 2.056501e-03
 Reticolociti -4.896948 6.831740e-04
 
 T-test results for HbS/HbS vs HbS/βthal°
-                                         index    t_stat  p_value
-                                           ALT -2.609212 0.034852
-                                         Cloro  2.747519 0.028576
-                                            GB  4.007836 0.006608
-                                          Hb F -3.473112 0.011787
-                                           MCV  5.324306 0.000259
-                                             N  2.857465 0.031718
-                      Urine Albuminuria (mg/L)  3.375421 0.001468
-Urine Albuminuria/Creatininuria  (mg/g creat.)  2.513347 0.016761
-                                  Vitamina B12  4.613364 0.011766
+index   t_stat  p_value
+  MCV 5.324306 0.000259
 
 T-test results for HbS/HbC vs HbS/HbS
-              index    t_stat      p_value
-                AST -3.360065 1.111924e-02
-       Acido Folico -4.947345 4.069231e-04
-Creatinina (umol/L)  2.630242 3.464655e-02
-                FDP -4.731642 4.834461e-05
-          Ferritina -4.747978 1.409710e-05
-                 GB -3.008429 1.761919e-02
-                 Hb  7.952827 2.417960e-05
-              Hb A1 -5.580733 7.466581e-07
-               Hb C 73.203410 8.331456e-18
-               Hb F -3.693869 2.097785e-03
-               Hb S -6.633456 1.725313e-08
-                 Ht  8.212059 5.056430e-06
-                  L -2.989165 1.218331e-02
-                LDH -9.766828 1.354079e-12
-                PLT -3.879738 1.790471e-03
-       Reticolociti -3.898486 3.373621e-03
-       Vitamina B12 -2.876281 1.528704e-02
+       index    t_stat      p_value
+Acido Folico -4.947345 4.069231e-04
+         FDP -4.731642 4.834461e-05
+   Ferritina -4.747978 1.409710e-05
+          Hb  7.952827 2.417960e-05
+       Hb A1 -5.580733 7.466581e-07
+        Hb C 73.203410 8.331456e-18
+        Hb S -6.633456 1.725313e-08
+          Ht  8.212059 5.056430e-06
+         LDH -9.766828 1.354079e-12
 
