@@ -2,7 +2,7 @@
 import pandas as pd
 import numpy as np
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn.model_selection import train_test_split, cross_val_score, LeaveOneOut
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 from sklearn.preprocessing import StandardScaler
@@ -161,3 +161,40 @@ print("Mean cross-validation score:", cv_scores.mean())
 
 
 
+#%% DECISION TREE WITH LEAVE-ONE-OUT CROSS-VALIDATION
+
+# Initialize the Decision Tree classifier
+dt_classifier = DecisionTreeClassifier(criterion='gini',random_state=42)
+
+# Initialize Leave-One-Out Cross-Validation
+loo = LeaveOneOut()
+
+# Perform LOOCV
+y_true, y_pred = [], []
+for train_index, test_index in loo.split(x):
+    X_train_LOOCV, X_test_LOOCV = x.iloc[train_index], x.iloc[test_index]
+    y_train_LOOCV, y_test_LOOCV = y.iloc[train_index], y.iloc[test_index]
+    
+    # Standardize the features
+    scaler = StandardScaler()
+    X_train_scaled = scaler.fit_transform(X_train_LOOCV)
+    X_test_scaled = scaler.transform(X_test_LOOCV)
+    
+    # Train the model
+    dt_classifier.fit(X_train_scaled, y_train_LOOCV)
+    
+    # Make predictions
+    y_pred.append(dt_classifier.predict(X_test_scaled)[0])
+    y_true.append(y_test_LOOCV.values[0])
+
+# Evaluate the model
+accuracy = accuracy_score(y_true, y_pred)
+print(f"Accuracy: {accuracy:.2f}")
+
+print("Classification Report:")
+print(classification_report(y_true, y_pred))
+
+print("Confusion Matrix:")
+print(confusion_matrix(y_true, y_pred))
+
+# REMAKRKS: potrebbe avere senso tenere solo alcune feature (magari quelle dal pvalue sensato con la diagnosi di anemia??)
