@@ -1,8 +1,11 @@
 #%%
 import pandas as pd
 import numpy as np
-
-from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+from sklearn.preprocessing import StandardScaler
 
 
 #%%#%%
@@ -63,9 +66,98 @@ merged_df = pd.merge(WM_df, dati_esami, on='PatientId', how='inner')
 merged_df=merged_df.dropna(axis=1,thresh=50,ignore_index=True)
 merged_df.fillna(0, inplace=True)
 
-# Separate features and labels
-X = merged_df.drop(columns=['PatientId', 'DiagnosisName', 'Infarto silente']).copy()
+# Divide the dataset into two subsets: one with patients diagnosed, and one with patients not diagnosed
+df_SI = merged_df[merged_df['Infarto silente'] == 'SI']
+df_NO = merged_df[merged_df['Infarto silente'] == 'NO']
+
+# Split the dataset into training and test sets, separately for the two subsets, to allow different sizes of sick and healty patients
+SI_train, SI_test = train_test_split(df_SI, train_size=0.6) 
+NO_train, NO_test = train_test_split(df_NO, train_size=0.9)
+
+# Merge the training and test sets
+X_train= pd.concat([SI_train.drop(columns=['PatientId', 'DiagnosisName', 'Infarto silente']), NO_train.drop(columns=['PatientId', 'DiagnosisName', 'Infarto silente'])])
+X_test= pd.concat([SI_test.drop(columns=['PatientId', 'DiagnosisName', 'Infarto silente']), NO_test.drop(columns=['PatientId', 'DiagnosisName', 'Infarto silente'])])
+y_train= pd.concat([SI_train['Infarto silente'], NO_train['Infarto silente']])
+y_test= pd.concat([SI_test['Infarto silente'], NO_test['Infarto silente']])
+
+
+# Separate features and labels (for cross-validation later)
+x = merged_df.drop(columns=['PatientId', 'DiagnosisName', 'Infarto silente']).copy()
 y = merged_df['Infarto silente'].copy()
 
-# Split the data into training and testing sets
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
+
+#%% RANDOM FOREST
+
+# Standardize the features
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+
+# Initialize the Random Forest classifier (8, 19)????
+rf_classifier = RandomForestClassifier(n_estimators=18,criterion='gini')
+
+# Train the model
+rf_classifier.fit(X_train_scaled, y_train)
+
+# Make predictions
+y_pred = rf_classifier.predict(X_test_scaled)
+
+# Evaluate the model
+accuracy = accuracy_score(y_test, y_pred)
+print(f"Accuracy: {accuracy:.2f}")
+
+print("Classification Report:")
+print(classification_report(y_test, y_pred))
+
+print("Confusion Matrix:")
+print(confusion_matrix(y_test, y_pred))
+
+
+# Perform 5-fold cross-validation
+rf = RandomForestClassifier(n_estimators=18,criterion='gini')
+cv_scores = cross_val_score(rf, x, y, cv=5)
+
+print("Cross-validation scores:", cv_scores)
+print("Mean cross-validation score:", cv_scores.mean())
+
+
+#%% DECISION TREE
+
+# Standardize the features
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+
+# Initialize the Decision Tree classifier
+dt_classifier = DecisionTreeClassifier(criterion='gini')
+
+# Train the model
+dt_classifier.fit(X_train_scaled, y_train)
+
+# Make predictions
+y_pred = dt_classifier.predict(X_test_scaled)
+
+# Evaluate the model
+accuracy = accuracy_score(y_test, y_pred)
+print(f"Accuracy: {accuracy:.2f}")
+
+print("Classification Report:")
+print(classification_report(y_test, y_pred))
+
+print("Confusion Matrix:")
+print(confusion_matrix(y_test, y_pred))
+
+
+# Separate features and labels
+x = merged_df.drop(columns=['PatientId', 'DiagnosisName', 'Infarto silente']).copy()
+y = merged_df['Infarto silente'].copy()
+
+# Perform 5-fold cross-validation
+rf = DecisionTreeClassifier(criterion='gini')
+cv_scores = cross_val_score(rf, x, y, cv=5)
+
+print("Cross-validation scores:", cv_scores)
+print("Mean cross-validation score:", cv_scores.mean())
+
+
+
