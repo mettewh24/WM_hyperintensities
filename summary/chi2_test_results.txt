@@ -1,0 +1,3 @@
+Chi2: 4.729433647010609
+P-value: 0.09397590836923904
+Degrees of Freedom: 2

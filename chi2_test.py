@@ -48,3 +48,9 @@ contingency_table = pd.crosstab(merged_df['DiagnosisName'],merged_df['Infarto si
 chi2, p, dof, expected = chi2_contingency(contingency_table)
 print(f"Chi2: {chi2}, P-value: {p}, Degrees of Freedom: {dof}")
 
+
+# Write the results to a text file in the summary folder
+with open('summary/chi2_test_results.txt', 'w') as file:
+    file.write(f"Chi2: {chi2}\n")
+    file.write(f"P-value: {p}\n")
+    file.write(f"Degrees of Freedom: {dof}\n")
