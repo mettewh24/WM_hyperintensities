@@ -66,25 +66,11 @@ merged_df = pd.merge(WM_df, dati_esami, on='PatientId', how='inner')
 merged_df=merged_df.dropna(axis=1,thresh=50,ignore_index=True)
 merged_df.fillna(0, inplace=True)
 
-# Divide the dataset into two subsets: one with patients diagnosed, and one with patients not diagnosed
-df_SI = merged_df[merged_df['Infarto silente'] == 'SI']
-df_NO = merged_df[merged_df['Infarto silente'] == 'NO']
-
-# Split the dataset into training and test sets, separately for the two subsets, to allow different sizes of sick and healty patients
-SI_train, SI_test = train_test_split(df_SI, train_size=0.6) 
-NO_train, NO_test = train_test_split(df_NO, train_size=0.9)
-
-# Merge the training and test sets
-X_train= pd.concat([SI_train.drop(columns=['PatientId', 'DiagnosisName', 'Infarto silente']), NO_train.drop(columns=['PatientId', 'DiagnosisName', 'Infarto silente'])])
-X_test= pd.concat([SI_test.drop(columns=['PatientId', 'DiagnosisName', 'Infarto silente']), NO_test.drop(columns=['PatientId', 'DiagnosisName', 'Infarto silente'])])
-y_train= pd.concat([SI_train['Infarto silente'], NO_train['Infarto silente']])
-y_test= pd.concat([SI_test['Infarto silente'], NO_test['Infarto silente']])
-
-
 # Separate features and labels (for cross-validation later)
 x = merged_df.drop(columns=['PatientId', 'DiagnosisName', 'Infarto silente']).copy()
 y = merged_df['Infarto silente'].copy()
 
+X_train, X_test, y_train, y_test = train_test_split(x, y,stratify=y, test_size=0.3)
 
 #%% RANDOM FOREST
 
