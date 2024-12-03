@@ -4,7 +4,7 @@ import numpy as np
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split, cross_val_score, LeaveOneOut
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+from sklearn.metrics import balanced_accuracy_score, classification_report, confusion_matrix, matthews_corrcoef
 from sklearn.preprocessing import StandardScaler
 
 
@@ -89,8 +89,11 @@ rf_classifier.fit(X_train_scaled, y_train)
 y_pred = rf_classifier.predict(X_test_scaled)
 
 # Evaluate the model
-accuracy = accuracy_score(y_test, y_pred)
-print(f"Accuracy: {accuracy:.2f}")
+balanced_accuracy = balanced_accuracy_score(y_test, y_pred)
+print(f"Balanced accuracy: {balanced_accuracy:.2f}")
+
+mcc = matthews_corrcoef(y_test, y_pred)
+print(f"Matthews Correlation Coefficient: {mcc:.2f}")
 
 print("Classification Report:")
 print(classification_report(y_test, y_pred))
@@ -124,8 +127,11 @@ dt_classifier.fit(X_train_scaled, y_train)
 y_pred = dt_classifier.predict(X_test_scaled)
 
 # Evaluate the model
-accuracy = accuracy_score(y_test, y_pred)
-print(f"Accuracy: {accuracy:.2f}")
+balanced_accuracy = balanced_accuracy_score(y_test, y_pred)
+print(f"Balanced accuracy: {balanced_accuracy:.2f}")
+
+mcc = matthews_corrcoef(y_test, y_pred)
+print(f"Matthews Correlation Coefficient: {mcc:.2f}")
 
 print("Classification Report:")
 print(classification_report(y_test, y_pred))
@@ -174,8 +180,11 @@ for train_index, test_index in loo.split(x):
     y_true.append(y_test_LOOCV.values[0])
 
 # Evaluate the model
-accuracy = accuracy_score(y_true, y_pred)
-print(f"Accuracy: {accuracy:.2f}")
+balanced_accuracy = balanced_accuracy_score(y_true, y_pred)
+print(f"Balanced accuracy: {balanced_accuracy:.2f}")
+
+mcc = matthews_corrcoef(y_true, y_pred)
+print(f"Matthews Correlation Coefficient: {mcc:.2f}")
 
 print("Classification Report:")
 print(classification_report(y_true, y_pred))
