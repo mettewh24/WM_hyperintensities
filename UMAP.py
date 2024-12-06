@@ -1,9 +1,9 @@
 #%%
 import pandas as pd
 import umap
+import hdbscan
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
 
 #%%
 # Read the Excel file
@@ -83,6 +83,41 @@ umap_result = reducer.fit_transform(features)
 umap_df = pd.DataFrame(umap_result, columns=['UMAP1', 'UMAP2', 'UMAP3'])
 umap_df['Infarto silente'] = labels
 
+# Create HDBSCAN clusterer
+clusterer = hdbscan.HDBSCAN(min_cluster_size=5)
+
+# Fit HDBSCAN to the UMAP results
+cluster_df=umap_df.copy()
+cluster_df['Cluster'] = clusterer.fit_predict(umap_df.drop(columns='Infarto silente'))
+
+# Calculate the percentage of each classification within each cluster
+classification_percentages = []
+
+for cluster in cluster_df['Cluster'].unique():
+    if cluster == -1:
+        print('Cluster -1 contains outliers')
+    cluster_data = cluster_df[cluster_df['Cluster'] == cluster]
+    total_count = len(cluster_data)
+    class_1_count = len(cluster_data[cluster_data['Infarto silente'] == "Sano"])
+    class_0_count = len(cluster_data[cluster_data['Infarto silente'] == 'Malato'])
+    
+    class_1_percentage = (class_1_count / total_count) * 100
+    class_0_percentage = (class_0_count / total_count) * 100
+
+    classification_percentages.append({
+        'Cluster': cluster,
+        'Class "Sano" Percentage': class_1_percentage,
+        'Class "Malato" Percentage': class_0_percentage,
+        'Cluster Size': total_count
+    })
+
+percentages_df = pd.DataFrame(classification_percentages)
+print(percentages_df)
+
+
+
+#%% Visualize the results of UMAP and HDBSCAN
+
 # Plot the UMAP results
 # 2D plot
 plt.figure(figsize=(10, 6))
@@ -93,7 +128,7 @@ plt.legend()
 plt.title('UMAP 2D Projection')
 plt.xlabel('UMAP1')
 plt.ylabel('UMAP2')
-plt.savefig('./plots/umap_2D.png')
+#plt.savefig('./plots/umap_2D.png')
 
 # 3D plot
 fig = plt.figure(figsize=(10, 9))
@@ -107,4 +142,31 @@ ax.set_xlabel('UMAP1')
 ax.set_ylabel('UMAP2')
 ax.set_zlabel('UMAP3')
 fig.subplots_adjust(left=0, right=1, top=0.95, bottom=0.01)
-plt.savefig('./plots/umap_3D.png')
+#plt.savefig('./plots/umap_3D.png')
+
+
+# Plot the clustering results
+# 2D plot
+plt.figure(figsize=(10, 6))
+for label in cluster_df['Cluster'].unique():
+    subset = cluster_df[cluster_df['Cluster'] == label]
+    plt.scatter(subset['UMAP1'], subset['UMAP2'], label=label)
+plt.legend()
+plt.title('Clustering results')
+plt.xlabel('UMAP1')
+plt.ylabel('UMAP2')
+#plt.savefig('./plots/clustering_2D.png')
+
+# 3D plot
+fig = plt.figure(figsize=(10, 9))
+ax = fig.add_subplot(111, projection='3d')
+for label in cluster_df['Cluster'].unique():
+    subset = cluster_df[cluster_df['Cluster'] == label]
+    ax.scatter(subset['UMAP1'], subset['UMAP2'], subset['UMAP3'], label=label)
+ax.legend()
+ax.set_title('3D clustering results') 
+ax.set_xlabel('UMAP1')
+ax.set_ylabel('UMAP2')
+ax.set_zlabel('UMAP3')
+fig.subplots_adjust(left=0, right=1, top=0.95, bottom=0.01)
+#plt.savefig('./plots/clustering_3D.png')
