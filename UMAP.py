@@ -114,6 +114,8 @@ for cluster in cluster_df['Cluster'].unique():
 percentages_df = pd.DataFrame(classification_percentages)
 print(percentages_df)
 
+#NOTE: I do know that classification percentages are not the best way to evaluate the clustering,
+#  but it is a good starting point to understand the results
 
 
 #%% Visualize the results of UMAP and HDBSCAN
@@ -170,3 +172,53 @@ ax.set_ylabel('UMAP2')
 ax.set_zlabel('UMAP3')
 fig.subplots_adjust(left=0, right=1, top=0.95, bottom=0.01)
 #plt.savefig('./plots/clustering_3D.png')
+
+
+
+#%% PERFORMING UMAP WITH VARIABLES SCALED TO [0,1] RANGE, TO SEE IF RESULTS IMPROVES/WORSENS
+
+# UMAP for dimensionality reduction and visualization
+features = merged_df.drop(columns=['PatientId', 'DiagnosisName', 'Infarto silente']).copy()
+labels = merged_df['Infarto silente'].copy()
+
+# Standardize the features
+scaler = StandardScaler()
+features_scaled = scaler.fit_transform(features)
+
+# Rescale the features to [0, 1] range
+min_max_scaler = MinMaxScaler()
+features_scaled = min_max_scaler.fit_transform(features_scaled)
+
+# Apply UMAP
+reducer = umap.UMAP(n_components=3, n_neighbors=10, init='pca', metric="cosine", learning_rate=0.5, n_epochs=2000)
+umap_result = reducer.fit_transform(features)
+
+# Create a DataFrame for the UMAP results
+umap_df = pd.DataFrame(umap_result, columns=['UMAP1', 'UMAP2', 'UMAP3'])
+umap_df['Infarto silente'] = labels
+
+# Plot the UMAP results
+# 2D plot
+plt.figure(figsize=(10, 6))
+for label in umap_df['Infarto silente'].unique():
+    subset = umap_df[umap_df['Infarto silente'] == label]
+    plt.scatter(subset['UMAP1'], subset['UMAP2'], label=label)
+plt.legend()
+plt.title('UMAP 2D scaled to [0, 1]')
+plt.xlabel('UMAP1')
+plt.ylabel('UMAP2')
+#plt.savefig('./plots/umap_2D_scaled_0_1.png')
+
+# 3D plot
+fig = plt.figure(figsize=(10, 9))
+ax = fig.add_subplot(111, projection='3d')
+for label in umap_df['Infarto silente'].unique():
+    subset = umap_df[umap_df['Infarto silente'] == label]
+    ax.scatter(subset['UMAP1'], subset['UMAP2'], subset['UMAP3'], label=label)
+ax.legend()
+ax.set_title('UMAP 3D scaled to [0, 1]')
+ax.set_xlabel('UMAP1')
+ax.set_ylabel('UMAP2')
+ax.set_zlabel('UMAP3')
+fig.subplots_adjust(left=0, right=1, top=0.95, bottom=0.01)
+#plt.savefig('./plots/umap_3D_scaled_0_1.png')
