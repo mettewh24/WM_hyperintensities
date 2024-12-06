@@ -3,7 +3,7 @@ import pandas as pd
 import umap
 import hdbscan
 import matplotlib.pyplot as plt
-from sklearn.preprocessing import StandardScaler, MinMaxScaler
+from sklearn.preprocessing import MinMaxScaler
 
 #%%
 # Read the Excel file
@@ -70,10 +70,6 @@ merged_df=merged_df.fillna(0)
 # UMAP for dimensionality reduction and visualization
 features = merged_df.drop(columns=['PatientId', 'DiagnosisName', 'Infarto silente']).copy()
 labels = merged_df['Infarto silente'].copy()
-
-# Standardize the features
-scaler = StandardScaler()
-features_scaled = scaler.fit_transform(features)
 
 # Apply UMAP
 reducer = umap.UMAP(n_components=3, n_neighbors=10, init='pca', metric="cosine", learning_rate=0.5, n_epochs=2000)
@@ -181,17 +177,13 @@ fig.subplots_adjust(left=0, right=1, top=0.95, bottom=0.01)
 features = merged_df.drop(columns=['PatientId', 'DiagnosisName', 'Infarto silente']).copy()
 labels = merged_df['Infarto silente'].copy()
 
-# Standardize the features
-scaler = StandardScaler()
-features_scaled = scaler.fit_transform(features)
-
 # Rescale the features to [0, 1] range
 min_max_scaler = MinMaxScaler()
-features_scaled = min_max_scaler.fit_transform(features_scaled)
+features_scaled = min_max_scaler.fit_transform(features)
 
 # Apply UMAP
 reducer = umap.UMAP(n_components=3, n_neighbors=10, init='pca', metric="cosine", learning_rate=0.5, n_epochs=2000)
-umap_result = reducer.fit_transform(features)
+umap_result = reducer.fit_transform(features_scaled)
 
 # Create a DataFrame for the UMAP results
 umap_df = pd.DataFrame(umap_result, columns=['UMAP1', 'UMAP2', 'UMAP3'])
