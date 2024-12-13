@@ -163,11 +163,15 @@ for cluster in cluster_df['Cluster'].unique():
 percentages_df = pd.DataFrame(classification_percentages)
 print(percentages_df)
 
+# Write the results to a text file in the summary folder
+with open('summary/clustering.txt', 'w') as file:
+    file.write(percentages_df.to_string())
+
 #NOTE: I do know that classification percentages are not the best way to evaluate the clustering,
 #  but it is a good starting point to understand the results
 
 
-##%% Visualize the results of UMAP and HDBSCAN
+#%% Visualize the results of UMAP and HDBSCAN
 
 # Plot the UMAP results
 # 2D plot

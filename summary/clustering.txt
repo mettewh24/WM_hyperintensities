@@ -1,0 +1,5 @@
+   Cluster  Class "Sano" Percentage  Class "Malato" Percentage  Cluster Size
+0        1                76.190476                  23.809524            21
+1       -1                85.714286                  14.285714             7
+2        2                35.714286                  64.285714            28
+3        0                66.666667                  33.333333             9
