@@ -120,10 +120,11 @@ merged_df = merged_df.fillna(merged_df.drop(columns=['PatientId','Infarto silent
 features = merged_df.drop(columns=['PatientId', 'DiagnosisName', 'Infarto silente']).copy()
 labels = merged_df['Infarto silente'].copy()
 
+#Scale the features
 features_scaled=StandardScaler().fit_transform(features)
 
 # Apply UMAP
-reducer = umap.UMAP(n_components=2, n_neighbors=5, init='pca', metric="ll_dirichlet", learning_rate=0.5, n_epochs=2000)
+reducer = umap.UMAP(n_components=2, n_neighbors=5, init='pca', metric="euclidean", learning_rate=0.5, n_epochs=500,random_state=42)
 umap_result = reducer.fit_transform(features_scaled)
 
 # Create a DataFrame for the UMAP results
@@ -140,6 +141,7 @@ cluster_df['Cluster'] = clusterer.fit_predict(umap_df.drop(columns='Infarto sile
 # Calculate the percentage of each classification within each cluster
 classification_percentages = []
 
+# For each cluster, compute the percentage of each class and the size of the cluster
 for cluster in cluster_df['Cluster'].unique():
     if cluster == -1:
         print('Cluster -1 contains outliers')
@@ -174,7 +176,7 @@ for label in umap_df['Infarto silente'].unique():
     subset = umap_df[umap_df['Infarto silente'] == label]
     plt.scatter(subset['UMAP1'], subset['UMAP2'], label=label)
 plt.legend()
-plt.title('UMAP 2D Projection')
+plt.title('UMAP 2D')
 plt.xlabel('UMAP1')
 plt.ylabel('UMAP2')
 #plt.savefig('./plots/umap_2D.png')
@@ -187,7 +189,7 @@ for label in cluster_df['Cluster'].unique():
     subset = cluster_df[cluster_df['Cluster'] == label]
     plt.scatter(subset['UMAP1'], subset['UMAP2'], label=label)
 plt.legend()
-plt.title('Clustering results')
+plt.title('HDBSCAN Clustering')
 plt.xlabel('UMAP1')
 plt.ylabel('UMAP2')
 #plt.savefig('./plots/clustering_2D.png')
@@ -205,7 +207,7 @@ min_max_scaler = MinMaxScaler()
 features_scaled = min_max_scaler.fit_transform(features)
 
 # Apply UMAP
-reducer = umap.UMAP(n_components=2, n_neighbors=10, init='pca', metric="ll_dirichlet", learning_rate=0.5, n_epochs=2000,random_state=42)
+reducer = umap.UMAP(n_components=2, n_neighbors=5, init='pca', metric="euclidean", learning_rate=0.5, n_epochs=500,random_state=42)
 umap_result = reducer.fit_transform(features_scaled)
 
 # Create a DataFrame for the UMAP results
