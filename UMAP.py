@@ -1,9 +1,10 @@
 #%%
 import pandas as pd
 import umap
+import numpy as np
 import hdbscan
 import matplotlib.pyplot as plt
-from sklearn.preprocessing import MinMaxScaler
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
 
 #%%
 # Read the Excel file
@@ -33,6 +34,48 @@ WM_df = WM_df.drop_duplicates(subset='PatientId', keep='last',ignore_index=True)
 # Change the values of the 'Infarto silente' column to 'Malato' and 'Sano', for easier interpretation
 WM_df['Infarto silente'] = WM_df['Infarto silente'].map({'SI': 'Malato', 'NO': 'Sano'})
 
+# %% Data pre-processing of dati_parametri_al_31122020
+
+# Load the data
+dati_parametri_al_31122020=pd.read_csv('./data/dati_parametri_al_31122020.csv')
+
+#Remove Outliers with no physical/medical meaning
+
+#Weight(Kg)
+dati_parametri_al_31122020.loc[dati_parametri_al_31122020['Weight(Kg)']>200,'Weight(Kg)']=np.nan
+dati_parametri_al_31122020.loc[dati_parametri_al_31122020['Weight(Kg)']<5,'Weight(Kg)']=np.nan
+
+#Height(cm)
+dati_parametri_al_31122020.loc[dati_parametri_al_31122020['Height(cm)']>250,'Height(cm)']=np.nan
+dati_parametri_al_31122020.loc[dati_parametri_al_31122020['Height(cm)']<30,'Height(cm)']=np.nan
+
+#Correction on inverted values for max and min blood pressure
+condition = dati_parametri_al_31122020['BloodPressureMax'] < dati_parametri_al_31122020['BloodPressureMin']
+dati_parametri_al_31122020.loc[condition, ['BloodPressureMax', 'BloodPressureMin']] = dati_parametri_al_31122020.loc[condition, ['BloodPressureMin', 'BloodPressureMax']].values
+
+#BloodPressureMax <20 removal (impossible to have max blood pressure lower than 20)
+dati_parametri_al_31122020.loc[dati_parametri_al_31122020['BloodPressureMax']<20,'BloodPressureMax']=np.nan
+
+#BloodPressureMin <20 removal (impossible to have min blood pressure lower than 20)
+dati_parametri_al_31122020.loc[dati_parametri_al_31122020['BloodPressureMin']<20,'BloodPressureMin']=np.nan
+
+#OxygenSaturation(%)<50 removal (saturation lower than 50 not feasible for life)
+dati_parametri_al_31122020.loc[dati_parametri_al_31122020['OxygenSaturation']<50,'OxygenSaturation']=np.nan
+
+#HeartRate>300 and HeartRate<15 removal (no life)
+dati_parametri_al_31122020.loc[dati_parametri_al_31122020['HeartRate']>300,'HeartRate']=np.nan
+dati_parametri_al_31122020.loc[dati_parametri_al_31122020['HeartRate']<15,'HeartRate']=np.nan
+
+#BMI>100 and BMI<10 removal
+dati_parametri_al_31122020.loc[dati_parametri_al_31122020['BMI']>100,'BMI']=np.nan      
+dati_parametri_al_31122020.loc[dati_parametri_al_31122020['BMI']<10,'BMI']=np.nan
+
+#RespiratoryRate=0 removal
+dati_parametri_al_31122020.loc[dati_parametri_al_31122020['RespiratoryRate']<1,'RespiratoryRate']=np.nan
+
+dati_parametri_al_31122020.drop(columns=['CenterId','CenterName','Date'], inplace=True)
+dati_parametri_al_31122020 = dati_parametri_al_31122020.pivot_table(index= 'PatientId', aggfunc='mean')
+
 
 #%%
 # Read the CSV file
@@ -60,10 +103,16 @@ dati_esami = dati_esami.reset_index(drop=False)
 # Merge the DataFrames on the 'PatientId' column
 merged_df = pd.merge(WM_df, dati_esami, on='PatientId', how='inner')
 
+# Merge the resulting DataFrame with the 'dati_parametri_al_31122020' DataFrame, to add parameters column
+merged_df = pd.merge(merged_df, dati_parametri_al_31122020, on='PatientId', how='left')
 
-#NOTE: to treat missing values, we can drop columns with less than 30 non-missing values, and fill the remaining missing values with 0
+
+#NOTE: to treat missing values, we can drop columns with less than 30 non-missing values,
+#  and fill the remaining missing values with the mean of the column, so that it contributes less to the analysis,
+#  after the application of the StandardScaler() function
 merged_df=merged_df.dropna(axis=1,thresh=30,ignore_index=True)
-merged_df=merged_df.fillna(0)
+merged_df = merged_df.fillna(merged_df.drop(columns=['PatientId','Infarto silente','DiagnosisName']).mean())
+
 
 
 #%%
@@ -71,12 +120,14 @@ merged_df=merged_df.fillna(0)
 features = merged_df.drop(columns=['PatientId', 'DiagnosisName', 'Infarto silente']).copy()
 labels = merged_df['Infarto silente'].copy()
 
+features_scaled=StandardScaler().fit_transform(features)
+
 # Apply UMAP
-reducer = umap.UMAP(n_components=3, n_neighbors=10, init='pca', metric="cosine", learning_rate=0.5, n_epochs=2000)
-umap_result = reducer.fit_transform(features)
+reducer = umap.UMAP(n_components=2, n_neighbors=5, init='pca', metric="ll_dirichlet", learning_rate=0.5, n_epochs=2000)
+umap_result = reducer.fit_transform(features_scaled)
 
 # Create a DataFrame for the UMAP results
-umap_df = pd.DataFrame(umap_result, columns=['UMAP1', 'UMAP2', 'UMAP3'])
+umap_df = pd.DataFrame(umap_result, columns=['UMAP1', 'UMAP2'])
 umap_df['Infarto silente'] = labels
 
 # Create HDBSCAN clusterer
@@ -114,7 +165,7 @@ print(percentages_df)
 #  but it is a good starting point to understand the results
 
 
-#%% Visualize the results of UMAP and HDBSCAN
+##%% Visualize the results of UMAP and HDBSCAN
 
 # Plot the UMAP results
 # 2D plot
@@ -127,20 +178,6 @@ plt.title('UMAP 2D Projection')
 plt.xlabel('UMAP1')
 plt.ylabel('UMAP2')
 #plt.savefig('./plots/umap_2D.png')
-
-# 3D plot
-fig = plt.figure(figsize=(10, 9))
-ax = fig.add_subplot(111, projection='3d')
-for label in umap_df['Infarto silente'].unique():
-    subset = umap_df[umap_df['Infarto silente'] == label]
-    ax.scatter(subset['UMAP1'], subset['UMAP2'], subset['UMAP3'], label=label)
-ax.legend()
-ax.set_title('UMAP 3D Projection')
-ax.set_xlabel('UMAP1')
-ax.set_ylabel('UMAP2')
-ax.set_zlabel('UMAP3')
-fig.subplots_adjust(left=0, right=1, top=0.95, bottom=0.01)
-#plt.savefig('./plots/umap_3D.png')
 
 
 # Plot the clustering results
@@ -155,20 +192,6 @@ plt.xlabel('UMAP1')
 plt.ylabel('UMAP2')
 #plt.savefig('./plots/clustering_2D.png')
 
-# 3D plot
-fig = plt.figure(figsize=(10, 9))
-ax = fig.add_subplot(111, projection='3d')
-for label in cluster_df['Cluster'].unique():
-    subset = cluster_df[cluster_df['Cluster'] == label]
-    ax.scatter(subset['UMAP1'], subset['UMAP2'], subset['UMAP3'], label=label)
-ax.legend()
-ax.set_title('3D clustering results') 
-ax.set_xlabel('UMAP1')
-ax.set_ylabel('UMAP2')
-ax.set_zlabel('UMAP3')
-fig.subplots_adjust(left=0, right=1, top=0.95, bottom=0.01)
-#plt.savefig('./plots/clustering_3D.png')
-
 
 
 #%% PERFORMING UMAP WITH VARIABLES SCALED TO [0,1] RANGE, TO SEE IF RESULTS IMPROVES/WORSENS
@@ -182,11 +205,11 @@ min_max_scaler = MinMaxScaler()
 features_scaled = min_max_scaler.fit_transform(features)
 
 # Apply UMAP
-reducer = umap.UMAP(n_components=3, n_neighbors=10, init='pca', metric="cosine", learning_rate=0.5, n_epochs=2000)
+reducer = umap.UMAP(n_components=2, n_neighbors=10, init='pca', metric="ll_dirichlet", learning_rate=0.5, n_epochs=2000,random_state=42)
 umap_result = reducer.fit_transform(features_scaled)
 
 # Create a DataFrame for the UMAP results
-umap_df = pd.DataFrame(umap_result, columns=['UMAP1', 'UMAP2', 'UMAP3'])
+umap_df = pd.DataFrame(umap_result, columns=['UMAP1', 'UMAP2'])
 umap_df['Infarto silente'] = labels
 
 # Plot the UMAP results
@@ -201,16 +224,3 @@ plt.xlabel('UMAP1')
 plt.ylabel('UMAP2')
 #plt.savefig('./plots/umap_2D_scaled_0_1.png')
 
-# 3D plot
-fig = plt.figure(figsize=(10, 9))
-ax = fig.add_subplot(111, projection='3d')
-for label in umap_df['Infarto silente'].unique():
-    subset = umap_df[umap_df['Infarto silente'] == label]
-    ax.scatter(subset['UMAP1'], subset['UMAP2'], subset['UMAP3'], label=label)
-ax.legend()
-ax.set_title('UMAP 3D scaled to [0, 1]')
-ax.set_xlabel('UMAP1')
-ax.set_ylabel('UMAP2')
-ax.set_zlabel('UMAP3')
-fig.subplots_adjust(left=0, right=1, top=0.95, bottom=0.01)
-#plt.savefig('./plots/umap_3D_scaled_0_1.png')
