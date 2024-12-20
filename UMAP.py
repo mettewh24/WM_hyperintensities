@@ -124,7 +124,7 @@ labels = merged_df['Infarto silente'].copy()
 features_scaled=StandardScaler().fit_transform(features)
 
 # Apply UMAP
-reducer = umap.UMAP(n_components=2, n_neighbors=5, init='pca', metric="euclidean", learning_rate=0.5, n_epochs=500,random_state=42)
+reducer = umap.UMAP(n_components=2, n_neighbors=5, init='pca', metric="euclidean", learning_rate=0.5, n_epochs=500,random_state=24)
 umap_result = reducer.fit_transform(features_scaled)
 
 # Create a DataFrame for the UMAP results
@@ -211,7 +211,7 @@ min_max_scaler = MinMaxScaler()
 features_scaled = min_max_scaler.fit_transform(features)
 
 # Apply UMAP
-reducer = umap.UMAP(n_components=2, n_neighbors=5, init='pca', metric="euclidean", learning_rate=0.5, n_epochs=500,random_state=42)
+reducer = umap.UMAP(n_components=2, n_neighbors=5, init='pca', metric="euclidean", learning_rate=0.5, n_epochs=500,random_state=24)
 umap_result = reducer.fit_transform(features_scaled)
 
 # Create a DataFrame for the UMAP results
